@@ -35,7 +35,7 @@ will print
 ```
 
 Edge cases handled:
-- If no argument is passed, 
+- If no argument is passed, the program will print an empty line to stdout.
 - If `-e` is passed but the special characters used aren't implemented, the program will write them verbatim to stdout.
 
 #### pwd
