@@ -5,7 +5,9 @@ Shellshock is an implementation of the Linux shell, written using C.
 - Run `make`
 - Run `./shellshock`
 ## Working
-Internal commands such as `pwd` and `cd` are handled by the shell binary itself. For external commands, the shell looks up the appropriate binary in the `./bin/` directory and then executes it in a separate process. By default this is handled by `fork()` and the `execl` family of functions. However, the user can make the shell use the POSIX Pthread library by appending `&t` to the end of the command, for example,`ls -a ~ &t`.
+Internal commands such as `pwd` and `cd` are handled by the shell binary itself. For external commands, the shell looks up the appropriate binary in the `./bin/` directory and then executes it in a separate process. By default this is handled by `fork()` and the `execl` family of functions. However, the user can make the shell use the POSIX Pthread library by appending `&t` to the end of the command, for example,`ls -a ~ &t`. Features of options:
+- Options can be passed in any order
+- Supports multiple options at one
 
 ## Commands
 ### Internal Commands
@@ -31,7 +33,7 @@ will print
 ```
 
 Edge cases handled:
-- The arguments passed to echo are not passed to any shell or program as-is to prevent injection attacks
+- If no argument is passed, 
 - If `-e` is passed but the special characters used aren't implemented, the program will write them verbatim to stdout.
 
 #### pwd
@@ -114,7 +116,7 @@ Options handled are:
 
 Edge cases handled:
 - It returns an error if it's unable to delete any file or directory
-- Allocates and uses a new string for storing the path everytime it recursively goes through a directory to prevent accidental overwrites.
+- Prints the usage if not passed any arguments
 
 #### cat
 cat concatenates the contents of all given files and prints it to stdout.
@@ -127,4 +129,4 @@ Options handled are:
 
 Edge cases handled:
 - It returns an error if it's unable to open any file
-- Buffering the file input to prevent any overflows
+- Buffering the file input in case the file is too large to fit into the buffer
