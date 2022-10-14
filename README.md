@@ -3,6 +3,8 @@ Shellshock is an implementation of the Linux shell, written using C.
 ## Installation
 - `cd` into `shellshock`
 - Run `make`
+## How to run it
+- Make sure you're in `shellshock`
 - Run `./shellshock`
 ## Working
 Internal commands such as `pwd` and `cd` are handled by the shell binary itself. For external commands, the shell looks up the appropriate binary in the `./bin/` directory and then executes it in a separate process. By default this is handled by `fork()` and the `execl` family of functions. However, the user can make the shell use the POSIX Pthread library by appending `&t` to the end of the command, for example,`ls -a ~ &t`. Features of options:
