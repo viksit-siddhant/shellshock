@@ -106,7 +106,7 @@ int main() {
         line[strlen(line)-1] = '\0';
         int num_args = i;
         int create_thread = 0;
-        optind = 1;
+        optind = 0;
         if (strcmp(args[num_args-1],"&t") == 0) {
             create_thread = 1;
             args[num_args-1] = NULL;
@@ -141,7 +141,7 @@ int main() {
             else {
                 char filename[100];
                 memset(filename, 0, 100);
-                strcpy(filename, args[1]);
+                strcpy(filename, args[optind]);
                 if (!flag_l) {
                     realpath(filename,args[optind]);
                 }
