@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
@@ -118,20 +119,41 @@ int main() {
             exit(0);
         }
         else if (strcmp(args[0], "cd") == 0) {
-            if (num_args == 1) {
+            int opt;
+            int flag_l = 1;
+            while ((opt = getopt(num_args, args, "LP")) != -1) {
+                if (opt == 'L') {
+                    if (!flag_l) {
+                        printf("Warning: -L and -P are exclusive\n");
+                    }
+                    flag_l = 1;
+
+                }
+                else if (opt == 'P') {
+                    flag_l = 0;
+                }
+            }
+            if (optind == num_args) {
                 if (chdir(getenv("HOME")) != 0) {
                     printf("Error: Could not change directory to home directory\n");
                 }
             }
-            else if (chdir(args[1]) != 0) {
-                printf("cd: %s: No such file or directory\n", args[1]);
+            else {
+                char filename[100];
+                memset(filename, 0, 100);
+                strcpy(filename, args[1]);
+                if (!flag_l) {
+                    realpath(filename,args[optind]);
+                }
+                if (chdir(args[optind]) != 0) {
+                    printf("cd: %s: No such file or directory\n", args[1]);
+                }
             }
-
         }
         else if (strcmp(args[0], "pwd") == 0) {
             int opt;
             int flag_l = 0;
-            while ((opt = getopt(num_args, args, "LP") != -1)) {
+            while ((opt = getopt(num_args, args, "LP")) != -1) {
                 if (opt == 'L') flag_l = 1;
                 else if (opt == 'P') {
                     if (flag_l) {
